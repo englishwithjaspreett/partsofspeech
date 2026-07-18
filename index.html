@@ -5,10 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parts of Speech Test</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-
 *{
     margin:0;
     padding:0;
@@ -16,117 +13,133 @@
 }
 
 body{
-    font-family:'Inter',sans-serif;
-    background:#0d0d0d;
+    font-family:Georgia, "Times New Roman", serif;
+    background:#0f0f0f;
     color:#f5f5f5;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    padding:20px;
+    min-height:100vh;
+    padding:24px;
 }
 
 .card{
     width:100%;
-    max-width:650px;
+    max-width:760px;
     background:#171717;
-    border:1px solid #2b2b2b;
+    border:1px solid #2c2c2c;
     border-radius:18px;
-    padding:40px;
+    padding:50px;
 }
 
 .header{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:45px;
+    margin-bottom:50px;
 }
 
-.questionNo{
-    color:#8d8d8d;
-    font-size:14px;
-    letter-spacing:1px;
+.question-number{
+    color:#9f9f9f;
+    font-size:15px;
+    letter-spacing:2px;
+    text-transform:uppercase;
 }
 
 .timer{
     width:58px;
     height:58px;
+    border:2px solid #4a4a4a;
     border-radius:50%;
-    border:2px solid #555;
     display:flex;
     justify-content:center;
     align-items:center;
-    font-size:20px;
-    font-weight:700;
+    font-size:22px;
+    font-weight:bold;
 }
 
-.word{
-    font-size:44px;
-    font-weight:700;
-    margin-bottom:10px;
+.prompt{
+    font-size:21px;
+    color:#bdbdbd;
+    line-height:1.6;
+    margin-bottom:20px;
 }
 
-.subtitle{
-    color:#8d8d8d;
-    margin-bottom:35px;
+.sentence{
+    font-size:42px;
+    line-height:1.5;
+    margin-bottom:45px;
+}
+
+.sentence strong{
+    color:#ffffff;
+    text-decoration:underline;
+    text-decoration-thickness:2px;
+    text-underline-offset:8px;
 }
 
 select{
     width:100%;
     padding:16px;
-    background:#111;
+    background:#101010;
     color:white;
-    border:1px solid #333;
+    border:1px solid #3b3b3b;
     border-radius:10px;
-    font-size:17px;
+    font-family:Georgia, serif;
+    font-size:18px;
     outline:none;
 }
 
 select:focus{
-    border-color:#888;
+    border-color:#8b8b8b;
 }
 
 button{
     width:100%;
     margin-top:28px;
     padding:16px;
-    background:white;
-    color:black;
+    background:#ffffff;
+    color:#000;
     border:none;
     border-radius:10px;
-    font-size:16px;
-    font-weight:600;
+    font-family:Georgia, serif;
+    font-size:18px;
     cursor:pointer;
     transition:.25s;
 }
 
 button:hover{
-    opacity:.9;
+    opacity:.92;
 }
 
 .result{
     text-align:center;
 }
 
+.result h2{
+    font-size:34px;
+    margin-bottom:15px;
+}
+
 .result h1{
-    font-size:60px;
-    margin:25px 0;
+    font-size:68px;
+    margin:20px 0;
 }
 
 .result p{
-    color:#999;
+    color:#aaaaaa;
+    font-size:18px;
 }
-
 </style>
-
 </head>
+
 <body>
 
 <div class="card">
 
 <div class="header">
-<div class="questionNo">
-QUESTION <span id="qno">1</span>/10
+<div class="question-number">
+Question <span id="qNo">1</span> of 10
 </div>
 
 <div class="timer">
@@ -134,76 +147,111 @@ QUESTION <span id="qno">1</span>/10
 </div>
 </div>
 
-<div class="word" id="word"></div>
-
-<div class="subtitle">
-Choose the correct part of speech.
+<div class="prompt">
+Identify the part of speech of the highlighted word.
 </div>
 
+<div class="sentence" id="sentence"></div>
+
 <select id="answer">
-
 <option value="">Select an answer</option>
-
 <option>Noun</option>
-
 <option>Verb</option>
-
 <option>Adjective</option>
-
 <option>Adverb</option>
-
 </select>
 
-<button onclick="nextQuestion()">
-Next
-</button>
+<button onclick="submitAnswer()">Next</button>
 
 </div>
 
 <script>
 
-const questions=[
+const questions = [
 
-{word:"Teacher",answer:"Noun"},
-{word:"Beautiful",answer:"Adjective"},
-{word:"Run",answer:"Verb"},
-{word:"Quickly",answer:"Adverb"},
-{word:"Mountain",answer:"Noun"},
-{word:"Happy",answer:"Adjective"},
-{word:"Jump",answer:"Verb"},
-{word:"Slowly",answer:"Adverb"},
-{word:"Book",answer:"Noun"},
-{word:"Bright",answer:"Adjective"}
+{
+sentence:'He is a <strong>teacher</strong>.',
+answer:'Noun'
+},
+
+{
+sentence:'She can <strong>sing</strong> beautifully.',
+answer:'Verb'
+},
+
+{
+sentence:'The <strong>beautiful</strong> flower bloomed.',
+answer:'Adjective'
+},
+
+{
+sentence:'The baby slept <strong>peacefully</strong>.',
+answer:'Adverb'
+},
+
+{
+sentence:'They bought a <strong>car</strong> yesterday.',
+answer:'Noun'
+},
+
+{
+sentence:'Birds <strong>fly</strong> high in the sky.',
+answer:'Verb'
+},
+
+{
+sentence:'It was a <strong>difficult</strong> question.',
+answer:'Adjective'
+},
+
+{
+sentence:'She answered <strong>politely</strong>.',
+answer:'Adverb'
+},
+
+{
+sentence:'The <strong>doctor</strong> arrived early.',
+answer:'Noun'
+},
+
+{
+sentence:'The children <strong>laughed</strong> loudly.',
+answer:'Verb'
+}
 
 ];
 
-let current=0;
-let score=0;
-let seconds=10;
-let interval;
+let current = 0;
+let score = 0;
+let seconds = 10;
+let timer;
 
 function loadQuestion(){
 
-document.getElementById("qno").innerHTML=current+1;
-document.getElementById("word").innerHTML=questions[current].word;
+document.getElementById("qNo").textContent = current + 1;
+
+document.getElementById("sentence").innerHTML =
+questions[current].sentence;
+
 document.getElementById("answer").value="";
 
-seconds=10;
-document.getElementById("timer").innerHTML=seconds;
+seconds = 10;
 
-clearInterval(interval);
+document.getElementById("timer").textContent = seconds;
 
-interval=setInterval(()=>{
+clearInterval(timer);
+
+timer = setInterval(function(){
 
 seconds--;
 
-document.getElementById("timer").innerHTML=seconds;
+document.getElementById("timer").textContent = seconds;
 
 if(seconds<=0){
 
-clearInterval(interval);
+clearInterval(timer);
 
-nextQuestion(true);
+submitAnswer(true);
 
 }
 
@@ -211,15 +259,20 @@ nextQuestion(true);
 
 }
 
-function nextQuestion(timeout=false){
+function submitAnswer(timeout=false){
 
-clearInterval(interval);
+clearInterval(timer);
 
-const selected=document.getElementById("answer").value;
+const selected =
+document.getElementById("answer").value;
 
-if(!timeout && selected===questions[current].answer){
+if(!timeout){
+
+if(selected===questions[current].answer){
 
 score++;
+
+}
 
 }
 
@@ -230,6 +283,8 @@ if(current>=questions.length){
 document.querySelector(".card").innerHTML=`
 
 <div class="result">
+
+<h2>Test Completed</h2>
 
 <p>Your Score</p>
 
