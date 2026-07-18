@@ -5,102 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parts of Speech Test</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f5f5f5;
+    font-family:'Inter',sans-serif;
+    background:#0d0d0d;
+    color:#f5f5f5;
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
-    margin:0;
+    padding:20px;
 }
 
-.container{
-    background:#fff;
-    width:650px;
+.card{
+    width:100%;
+    max-width:650px;
+    background:#171717;
+    border:1px solid #2b2b2b;
+    border-radius:18px;
     padding:40px;
-    border-radius:12px;
-    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
-h1{
-    text-align:center;
-    margin-top:0;
-}
-
-.top{
+.header{
     display:flex;
     justify-content:space-between;
-    margin-bottom:25px;
-    font-size:18px;
-    font-weight:bold;
+    align-items:center;
+    margin-bottom:45px;
 }
 
-#question{
-    font-size:28px;
-    margin-bottom:25px;
+.questionNo{
+    color:#8d8d8d;
+    font-size:14px;
+    letter-spacing:1px;
+}
+
+.timer{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    border:2px solid #555;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:20px;
+    font-weight:700;
+}
+
+.word{
+    font-size:44px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    color:#8d8d8d;
+    margin-bottom:35px;
 }
 
 select{
     width:100%;
-    padding:14px;
-    font-size:18px;
+    padding:16px;
+    background:#111;
+    color:white;
+    border:1px solid #333;
+    border-radius:10px;
+    font-size:17px;
+    outline:none;
+}
+
+select:focus{
+    border-color:#888;
 }
 
 button{
-    margin-top:25px;
     width:100%;
-    padding:14px;
-    font-size:18px;
+    margin-top:28px;
+    padding:16px;
+    background:white;
+    color:black;
     border:none;
-    border-radius:8px;
-    background:#2d7ff9;
-    color:white;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
     cursor:pointer;
+    transition:.25s;
 }
 
 button:hover{
-    background:#1565d8;
-}
-
-#timer{
-    color:red;
+    opacity:.9;
 }
 
 .result{
     text-align:center;
-    font-size:28px;
 }
+
+.result h1{
+    font-size:60px;
+    margin:25px 0;
+}
+
+.result p{
+    color:#999;
+}
+
 </style>
 
 </head>
 <body>
 
-<div class="container">
+<div class="card">
 
-<h1>Parts of Speech Test</h1>
-
-<div class="top">
-<div>Question <span id="qNo"></span>/10</div>
-<div>⏳ <span id="timer">10</span>s</div>
+<div class="header">
+<div class="questionNo">
+QUESTION <span id="qno">1</span>/10
 </div>
 
-<div id="question"></div>
+<div class="timer">
+<span id="timer">10</span>
+</div>
+</div>
+
+<div class="word" id="word"></div>
+
+<div class="subtitle">
+Choose the correct part of speech.
+</div>
 
 <select id="answer">
-<option value="">Choose Part of Speech</option>
+
+<option value="">Select an answer</option>
+
 <option>Noun</option>
-<option>Pronoun</option>
+
 <option>Verb</option>
+
 <option>Adjective</option>
+
 <option>Adverb</option>
-<option>Preposition</option>
-<option>Conjunction</option>
-<option>Interjection</option>
+
 </select>
 
-<button onclick="submitAnswer()">Next</button>
+<button onclick="nextQuestion()">
+Next
+</button>
 
 </div>
 
@@ -108,83 +164,90 @@ button:hover{
 
 const questions=[
 
-{word:"Beautiful",answer:"Adjective"},
-{word:"Quickly",answer:"Adverb"},
 {word:"Teacher",answer:"Noun"},
+{word:"Beautiful",answer:"Adjective"},
 {word:"Run",answer:"Verb"},
-{word:"She",answer:"Pronoun"},
-{word:"Because",answer:"Conjunction"},
-{word:"Wow!",answer:"Interjection"},
-{word:"Under",answer:"Preposition"},
-{word:"Dog",answer:"Noun"},
-{word:"Slowly",answer:"Adverb"}
+{word:"Quickly",answer:"Adverb"},
+{word:"Mountain",answer:"Noun"},
+{word:"Happy",answer:"Adjective"},
+{word:"Jump",answer:"Verb"},
+{word:"Slowly",answer:"Adverb"},
+{word:"Book",answer:"Noun"},
+{word:"Bright",answer:"Adjective"}
 
 ];
 
 let current=0;
 let score=0;
-let timeLeft=10;
-let timer;
+let seconds=10;
+let interval;
 
 function loadQuestion(){
 
-document.getElementById("qNo").innerText=current+1;
-document.getElementById("question").innerHTML=
-`Identify the part of speech of <b>${questions[current].word}</b>`;
-
+document.getElementById("qno").innerHTML=current+1;
+document.getElementById("word").innerHTML=questions[current].word;
 document.getElementById("answer").value="";
 
-timeLeft=10;
-document.getElementById("timer").innerText=timeLeft;
+seconds=10;
+document.getElementById("timer").innerHTML=seconds;
 
-clearInterval(timer);
+clearInterval(interval);
 
-timer=setInterval(()=>{
+interval=setInterval(()=>{
 
-timeLeft--;
-document.getElementById("timer").innerText=timeLeft;
+seconds--;
 
-if(timeLeft<=0){
-clearInterval(timer);
-submitAnswer(true);
+document.getElementById("timer").innerHTML=seconds;
+
+if(seconds<=0){
+
+clearInterval(interval);
+
+nextQuestion(true);
+
 }
 
 },1000);
 
 }
 
-function submitAnswer(timeout=false){
+function nextQuestion(timeout=false){
 
-clearInterval(timer);
+clearInterval(interval);
 
 const selected=document.getElementById("answer").value;
 
-if(!timeout){
+if(!timeout && selected===questions[current].answer){
 
-if(selected===questions[current].answer){
 score++;
-}
 
 }
 
 current++;
 
-if(current<questions.length){
+if(current>=questions.length){
 
-loadQuestion();
+document.querySelector(".card").innerHTML=`
 
-}else{
-
-document.querySelector(".container").innerHTML=`
 <div class="result">
-<h2>Test Completed!</h2>
+
 <p>Your Score</p>
-<h1>${score} / ${questions.length}</h1>
-<button onclick="location.reload()">Restart Test</button>
+
+<h1>${score}/10</h1>
+
+<button onclick="location.reload()">
+Try Again
+</button>
+
 </div>
+
 `;
 
+return;
+
 }
+
+loadQuestion();
 
 }
 
