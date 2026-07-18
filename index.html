@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parts of Speech Test</title>
+
+<style>
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f5f5;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
+}
+
+.container{
+    background:#fff;
+    width:650px;
+    padding:40px;
+    border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+h1{
+    text-align:center;
+    margin-top:0;
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:25px;
+    font-size:18px;
+    font-weight:bold;
+}
+
+#question{
+    font-size:28px;
+    margin-bottom:25px;
+}
+
+select{
+    width:100%;
+    padding:14px;
+    font-size:18px;
+}
+
+button{
+    margin-top:25px;
+    width:100%;
+    padding:14px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    background:#2d7ff9;
+    color:white;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#1565d8;
+}
+
+#timer{
+    color:red;
+}
+
+.result{
+    text-align:center;
+    font-size:28px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+<h1>Parts of Speech Test</h1>
+
+<div class="top">
+<div>Question <span id="qNo"></span>/10</div>
+<div>⏳ <span id="timer">10</span>s</div>
+</div>
+
+<div id="question"></div>
+
+<select id="answer">
+<option value="">Choose Part of Speech</option>
+<option>Noun</option>
+<option>Pronoun</option>
+<option>Verb</option>
+<option>Adjective</option>
+<option>Adverb</option>
+<option>Preposition</option>
+<option>Conjunction</option>
+<option>Interjection</option>
+</select>
+
+<button onclick="submitAnswer()">Next</button>
+
+</div>
+
+<script>
+
+const questions=[
+
+{word:"Beautiful",answer:"Adjective"},
+{word:"Quickly",answer:"Adverb"},
+{word:"Teacher",answer:"Noun"},
+{word:"Run",answer:"Verb"},
+{word:"She",answer:"Pronoun"},
+{word:"Because",answer:"Conjunction"},
+{word:"Wow!",answer:"Interjection"},
+{word:"Under",answer:"Preposition"},
+{word:"Dog",answer:"Noun"},
+{word:"Slowly",answer:"Adverb"}
+
+];
+
+let current=0;
+let score=0;
+let timeLeft=10;
+let timer;
+
+function loadQuestion(){
+
+document.getElementById("qNo").innerText=current+1;
+document.getElementById("question").innerHTML=
+`Identify the part of speech of <b>${questions[current].word}</b>`;
+
+document.getElementById("answer").value="";
+
+timeLeft=10;
+document.getElementById("timer").innerText=timeLeft;
+
+clearInterval(timer);
+
+timer=setInterval(()=>{
+
+timeLeft--;
+document.getElementById("timer").innerText=timeLeft;
+
+if(timeLeft<=0){
+clearInterval(timer);
+submitAnswer(true);
+}
+
+},1000);
+
+}
+
+function submitAnswer(timeout=false){
+
+clearInterval(timer);
+
+const selected=document.getElementById("answer").value;
+
+if(!timeout){
+
+if(selected===questions[current].answer){
+score++;
+}
+
+}
+
+current++;
+
+if(current<questions.length){
+
+loadQuestion();
+
+}else{
+
+document.querySelector(".container").innerHTML=`
+<div class="result">
+<h2>Test Completed!</h2>
+<p>Your Score</p>
+<h1>${score} / ${questions.length}</h1>
+<button onclick="location.reload()">Restart Test</button>
+</div>
+`;
+
+}
+
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
