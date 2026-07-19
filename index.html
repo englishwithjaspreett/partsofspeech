@@ -47,8 +47,8 @@ body{
 }
 
 .timer{
-    width:60px;
-    height:60px;
+    width:65px;
+    height:65px;
     border-radius:50%;
     border:2px solid #505050;
     display:flex;
@@ -132,6 +132,26 @@ body{
     font-family:Georgia, serif;
     font-size:20px;
     cursor:pointer;
+}
+
+@media(max-width:600px){
+
+.card{
+    padding:30px;
+}
+
+.sentence{
+    font-size:30px;
+}
+
+.options{
+    grid-template-columns:1fr;
+}
+
+.option{
+    font-size:18px;
+}
+
 }
 </style>
 </head>
@@ -230,7 +250,7 @@ answer:'Verb'
 
 let current=0;
 let score=0;
-let seconds=10;
+let seconds=30;
 let countdown;
 
 function loadQuestion(){
@@ -240,7 +260,8 @@ document.getElementById("qNo").textContent=current+1;
 document.getElementById("sentence").innerHTML=
 questions[current].sentence;
 
-seconds=10;
+seconds=30;
+
 document.getElementById("timer").textContent=seconds;
 
 clearInterval(countdown);
